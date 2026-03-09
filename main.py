@@ -44,6 +44,16 @@ class SecurePassManager:
         self._load_salt()
         self._show_login_window()
 
+    def _center_window(self, window, width, height):
+        """将窗口居中显示"""
+        window.update_idletasks()
+        screen_width = window.winfo_screenwidth()
+        screen_height = window.winfo_screenheight()
+        x = (screen_width - width) // 2
+        y = (screen_height - height) // 2
+        # 直接设置包含位置的 geometry，避免窗口先显示再移动
+        window.geometry(f"{width}x{height}+{x}+{y}")
+
     def _load_salt(self):
         # 只在salt文件存在时加载，不存在时不创建
         # salt文件将在设置主密码成功后才创建
@@ -128,6 +138,7 @@ class SecurePassManager:
         self.login_win.resizable(False, False)
         self.login_win.transient(self.root)
         self.login_win.grab_set()
+        self._center_window(self.login_win, 400, 280)
 
         frame = ttk.Frame(self.login_win, padding="30")
         frame.pack(fill=tk.BOTH, expand=True)
@@ -288,6 +299,8 @@ class SecurePassManager:
     def _show_main_window(self):
         self.login_win.destroy()
         self.root.deiconify()
+        self.root.update()
+        self._center_window(self.root, 900, 600)
         self._create_ui()
 
     def _create_ui(self):
@@ -367,6 +380,7 @@ class SecurePassManager:
         win.geometry("450x400")
         win.transient(self.root)
         win.grab_set()
+        self._center_window(win, 450, 400)
 
         frame = ttk.Frame(win, padding="20")
         frame.pack(fill=tk.BOTH, expand=True)
@@ -457,6 +471,7 @@ class SecurePassManager:
         win.geometry("450x350")
         win.transient(self.root)
         win.grab_set()
+        self._center_window(win, 450, 350)
 
         frame = ttk.Frame(win, padding="20")
         frame.pack(fill=tk.BOTH, expand=True)
@@ -569,6 +584,7 @@ class SecurePassManager:
         win.title(f"密码详情 - {record.get('account', '')}")
         win.geometry("450x300")
         win.transient(self.root)
+        self._center_window(win, 450, 300)
 
         frame = ttk.Frame(win, padding="20")
         frame.pack(fill=tk.BOTH, expand=True)
@@ -623,6 +639,7 @@ class SecurePassManager:
         win.geometry("450x350")
         win.transient(self.root)
         win.grab_set()
+        self._center_window(win, 450, 350)
 
         frame = ttk.Frame(win, padding="20")
         frame.pack(fill=tk.BOTH, expand=True)
